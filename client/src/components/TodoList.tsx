@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import TodoItem, { Task } from './TodoItem';
+import TodoItem, { type Task } from './TodoItem';
 
 function TodoList() {
   const [tasks, setTasks] = useState<Task[]>([]);
