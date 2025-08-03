@@ -13,7 +13,10 @@ export default [
       parser: tsParser,
       ecmaVersion: 2020,
       sourceType: 'module',
-      globals: globals.node,
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+      },
     },
     plugins: {
       '@typescript-eslint': tsPlugin,

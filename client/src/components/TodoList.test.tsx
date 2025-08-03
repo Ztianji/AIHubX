@@ -10,7 +10,9 @@ afterEach(() => {
 
 test('loads and displays tasks', async () => {
   const tasks = [{ id: 1, title: 'Existing', completed: false }];
-  const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => tasks });
+  const fetchMock = vi
+    .fn()
+    .mockResolvedValue({ ok: true, json: async () => tasks });
   vi.stubGlobal('fetch', fetchMock);
   render(<TodoList />);
   expect(await screen.findByText('Existing')).toBeInTheDocument();
