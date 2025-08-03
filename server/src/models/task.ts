@@ -48,19 +48,102 @@ export function createTask(title: string): Promise<Task> {
 
 export function getTasks(): Promise<Task[]> {
   return new Promise((resolve, reject) => {
-    db.all('SELECT * FROM tasks', (err, rows: any[]) => {
+    db.all<{
+      id: number;
+      title: string;
+      completed: number;
+      created_at: string;
+    }>('SELECT * FROM tasks', (err, rows) => {
       if (err) {
         reject(err);
         return;
       }
       resolve(
-        rows.map((row: any) => ({
+        rows.map((row) => ({
           id: row.id,
           title: row.title,
           completed: Boolean(row.completed),
           created_at: row.created_at,
         })),
       );
+    });
+  });
+}
+
+export function getTask(id: number): Promise<Task | undefined> {
+  return new Promise((resolve, reject) => {
+    db.get<{
+      id: number;
+      title: string;
+      completed: number;
+      created_at: string;
+    }>('SELECT * FROM tasks WHERE id = ?', [id], (err, row) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      if (!row) {
+        resolve(undefined);
+        return;
+      }
+      resolve({
+        id: row.id,
+        title: row.title,
+        completed: Boolean(row.completed),
+        created_at: row.created_at,
+      });
+    });
+  });
+}
+
+export function updateTask(
+  id: number,
+  updates: { title?: string; completed?: boolean },
+): Promise<Task | null> {
+  return new Promise((resolve, reject) => {
+    const fields: string[] = [];
+    const values: unknown[] = [];
+    if (typeof updates.title === 'string') {
+      fields.push('title = ?');
+      values.push(updates.title);
+    }
+    if (typeof updates.completed === 'boolean') {
+      fields.push('completed = ?');
+      values.push(updates.completed ? 1 : 0);
+    }
+    if (fields.length === 0) {
+      resolve(null);
+      return;
+    }
+    values.push(id);
+    db.run(
+      `UPDATE tasks SET ${fields.join(', ')} WHERE id = ?`,
+      values,
+      function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        if (this.changes === 0) {
+          resolve(null);
+          return;
+        }
+        getTask(id)
+          .then((task) => resolve(task ?? null))
+          .catch(reject);
+      },
+    );
+  });
+}
+
+export function deleteTask(id: number): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    db.run('DELETE FROM tasks WHERE id = ?', [id], function (err) {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(this.changes > 0);
     });
   });
 }
