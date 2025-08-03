@@ -34,7 +34,9 @@ describe('tasks API', () => {
   });
 
   test('deletes a task', async () => {
-    const createRes = await request(app).post('/tasks').send({ title: 'to delete' });
+    const createRes = await request(app)
+      .post('/tasks')
+      .send({ title: 'to delete' });
     const id = createRes.body.id;
     const deleteRes = await request(app).delete(`/tasks/${id}`);
     expect(deleteRes.status).toBe(204);

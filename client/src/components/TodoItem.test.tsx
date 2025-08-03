@@ -12,9 +12,7 @@ describe('TodoItem', () => {
   });
 
   test('renders task title', () => {
-    render(
-      <TodoItem task={task} onUpdate={vi.fn()} onDelete={vi.fn()} />,
-    );
+    render(<TodoItem task={task} onUpdate={vi.fn()} onDelete={vi.fn()} />);
     expect(screen.getByText('Test Task')).toBeInTheDocument();
   });
 
@@ -38,7 +36,9 @@ describe('TodoItem', () => {
     vi.stubGlobal('fetch', fetchMock);
     render(<TodoItem task={task} onUpdate={vi.fn()} onDelete={onDelete} />);
     await fireEvent.click(screen.getByText('Delete'));
-    expect(fetchMock).toHaveBeenCalledWith(`/tasks/${task.id}`, { method: 'DELETE' });
+    expect(fetchMock).toHaveBeenCalledWith(`/tasks/${task.id}`, {
+      method: 'DELETE',
+    });
     expect(onDelete).toHaveBeenCalledWith(task.id);
   });
 });
