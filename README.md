@@ -69,3 +69,42 @@
 - 通讯：WebSocket + REST API
 - 插件系统：基于模块热插拔的NPM模块
 - 部署：Docker + K8s 支持，CI/CD
+
+---
+
+## ⚙️ 安装
+
+```bash
+git clone https://github.com/yourname/AIHubX.git
+cd AIHubX
+cd server && npm install
+cd ../client && npm install
+```
+
+---
+
+## 🚀 使用示例
+
+### 本地运行
+
+启动后端服务：
+
+```bash
+cd server
+npm run dev
+```
+
+启动前端应用：
+
+```bash
+cd client
+npm run dev
+```
+
+### Docker Compose 部署
+
+```bash
+docker compose up --build
+```
+
+启动后访问 `http://localhost:3000` 即可。
