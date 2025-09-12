@@ -1,7 +1,10 @@
 import express from 'express';
 import { createTask, getTasks, updateTask, deleteTask } from '../models/task';
+import { authenticate } from '../middleware/auth';
 
 const router = express.Router();
+
+router.use(authenticate);
 
 router.get('/', async (_req, res, next) => {
   try {
