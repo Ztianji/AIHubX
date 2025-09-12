@@ -64,7 +64,7 @@
 
 ## 🛠️ 技术选型
 
-- 后端：Node.js + PostgreSQL + Redis
+- 后端：Node.js + SQLite
 - 前端：React + Tailwind CSS + shadcn/ui + 可视化拖拽库
 - 通讯：WebSocket + REST API
 - 插件系统：基于模块热插拔的NPM模块
@@ -107,4 +107,4 @@ npm run dev
 docker compose up --build
 ```
 
-启动后访问 `http://localhost:3000` 即可。
+当前版本使用 SQLite 进行数据存储，因此 Compose 文件仅包含应用服务，无需额外的 Postgres 或 Redis。启动后访问 `http://localhost:3000` 即可。
